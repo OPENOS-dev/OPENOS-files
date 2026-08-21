@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>OpenUI.qml</file>
+        <file>FileManager.qml</file>
+            <file>qml/ThemedIcon.qml</file>
+    </qresource>
+</RCC>
