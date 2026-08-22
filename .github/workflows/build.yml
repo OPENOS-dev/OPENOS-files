@@ -18,7 +18,6 @@ jobs:
     env:
       COMPONENT: openos-files
       BINPKG_REPO: OPENOS-dev/OPENOS-BUILD-BINPKG
-      KERNEL_TIER: ${{ inputs.kernel || 'base' }}
 
     steps:
       - uses: actions/checkout@v4
