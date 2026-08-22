@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86-64]
+        arch: [x86-64, x86, arm64, arm32, loong64]
 
     env:
       COMPONENT: openos-files
@@ -37,7 +37,7 @@ jobs:
             ${{ matrix.arch == 'arm64' && 'crossbuild-essential-arm64' || '' }} \
             ${{ matrix.arch == 'arm32' && 'crossbuild-essential-armhf' || '' }} \
             ${{ matrix.arch == 'x86' && 'gcc-multilib' || '' }} \
-            ${{ matrix.arch == 'loong64' && 'gcc-13-loongarch64-linux-gnu g++-13-loongarch64-linux-gnu' || '' }}
+            ${{ matrix.arch == 'loong64' && 'gcc-14-loongarch64-linux-gnu g++-14-loongarch64-linux-gnu' || '' }}
           ccache -M 4G
           echo "/usr/lib/ccache" >> "$GITHUB_PATH"
 
