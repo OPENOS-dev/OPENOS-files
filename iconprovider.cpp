@@ -1,32 +1,22 @@
-/*
- * Copyright (C) 2026 OPENOS-dev
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the OPENOS-PROJECT-LICENSE (OPL) v1.2.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * OPL for more details.
- *
- * You should have received a copy of the OPL along with this program.
- * If not, see <https://github.com/OPENOS-dev/OPL>.
- */
-
 #include "iconprovider.h"
 
 #include <QFile>
 #include <QPainter>
 #include <QSvgRenderer>
+#include <QUrl>
 #include <QUrlQuery>
 
-/* id 是 QUrl.path() 已 decode, 形如:
- *   /usr/share/icons/OpenOS/scalable/panel/audio-volume-high.svg
- * QUrl 可能前导 '/' 丢失 (取决于 host 解析), 兜底补 '/' */
+IconProvider::IconProvider()
+    : QQuickImageProvider(QQuickImageProvider::Image) {}
+
+/* id 是 image://icons/<path>?size=<n>&color=<hex>
+ * 从 id 中解析 path 和 query 参数 */
 QImage IconProvider::requestImage(const QString& id, QSize* size,
-                                  const QSize& requestedSize,
-                                  const QUrlQuery& query) {
-    QString p = id;
-    if (!p.startsWith(QLatin1Char('/'))) p.prepend(QLatin1Char('/'));
+                                  const QSize& requestedSize) {
+    /* 解析 URL: id 格式为 "image://icons/<path>" + query 部分 */
+    QUrl url(id);
+    QString p = url.path();
+    QUrlQuery query(url);
 
     QFile f(p);
     if (!f.open(QIODevice::ReadOnly)) return {};
